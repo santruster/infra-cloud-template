@@ -21,4 +21,8 @@ ENV DATA_DIR=/data PORT=8080
 HEALTHCHECK --interval=5s --timeout=3s --start-period=5s --retries=10 \
   CMD ["python", "-c", "import os, urllib.request; urllib.request.urlopen('http://localhost:%s/healthz' % os.environ.get('PORT', '8080'), timeout=2)"]
 
+RUN useradd --create-home --uid 1000 appuser \
+    && chown -R appuser /app /data
+USER appuser
 CMD ["python", "main.py"]
+
